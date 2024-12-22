@@ -13,7 +13,7 @@ with open('./front-end/game_category_list.txt', "r") as file:
 with open('./front-end/game_player_list.txt', "r") as file:
     players = file.read().splitlines()
 
-# Read in full data as answer key and shorten list to just players
+# Read in full data as answer key and shorten list to just players in the game
 full_info = pd.read_csv('./data_scraping/data/player_info.csv')
 player_info_short = full_info[list(players)]
 
@@ -22,6 +22,8 @@ scorecard = [False] * len(categories)
 current_player_index = 0
 
 # Game helper functions
+
+#this function will be called whenever a user makes a guess
 def check_player_category_pair(player, category):
     try:
         player_values = player_info_short[player]

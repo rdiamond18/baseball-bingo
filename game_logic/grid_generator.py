@@ -89,8 +89,8 @@ while not solvable:
     
 
 # Write players and categories to files
-category_file_path = "game_category_list.txt"
-player_file_path = "game_player_list.txt"
+category_file_path = "../front-end/game_category_list.txt"
+player_file_path = "../front-end/game_player_list.txt"
 
 # Write categories to a .txt file, one per line
 with open(category_file_path, "w") as cat_file:

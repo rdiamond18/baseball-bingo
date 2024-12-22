@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const scorecardElement = document.getElementById('scorecard');
 
         playerNameElement.textContent = `Current Player: ${data.current_player}`;
-        playerIndexElement.textContent = `Player Index: ${data.current_player_index}`;
+        playerIndexElement.textContent = `Players Left: ${40 - data.current_player_index}`;
         scorecardElement.textContent = `Scorecard: ${data.scorecard.join(', ')}`;
     }
 });
