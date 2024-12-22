@@ -7,10 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             const categories = data.split("\n").filter(line => line.trim() !== "");
 
-            // Populate the grid with categories
+            // Populate the grid with categories and make them clickable
             categories.forEach(category => {
                 const gridItem = document.createElement("div");
+                gridItem.classList.add('grid-box');  // Add a class for styling
                 gridItem.textContent = category;
+
+                // Add click event listener to the grid item
+                gridItem.addEventListener('click', () => {
+                    submitInput(category);  // Submit the category as input when clicked
+                });
+
                 gridContainer.appendChild(gridItem);
             });
         })
@@ -25,21 +32,29 @@ document.addEventListener("DOMContentLoaded", () => {
             updateGameStatus(data);
         });
 
-    // Update game status dynamically based on user input
-    const userInputForm = document.getElementById('user-input-form');
-    userInputForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const userInput = event.target.elements['user-input'].value;
-
+    // Function to send user input to the server
+    function submitInput(input) {
         fetch('/submit_input', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ input: userInput })
+            body: JSON.stringify({ input: input })
         })
         .then(response => response.json())
         .then(data => {
             updateGameStatus(data);
         });
+    }
+    
+    // Event listeners for Skip and Wildcard buttons
+    const skipButton = document.getElementById('skip-button');
+    const wildcardButton = document.getElementById('wildcard-button');
+
+    skipButton.addEventListener('click', () => {
+        submitInput('skip');
+    });
+
+    wildcardButton.addEventListener('click', () => {
+        submitInput('wildcard');
     });
 
     // Function to update the game status

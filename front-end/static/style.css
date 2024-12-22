@@ -1,30 +1,52 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-}
-
-h1 {
-    margin: 20px 0;
-}
-
+/* Grid container */
 #grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);  /* 4 columns */
-    gap: 10px;  /* Space between items */
-    padding: 20px;
+    grid-template-columns: repeat(4, 1fr); /* Adjust for the number of columns */
+    gap: 10px;
+    margin-top: 100px;
 }
 
-#grid-container div {
-    background-color: #f4f4f4;
-    border: 1px solid #ccc;
-    padding: 10px;
+/* Style for each grid box */
+.grid-box {
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
     text-align: center;
-    font-size: 1em;
-    height: 100px;  /* Adjust height if needed */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
+
+/* Change color when hovering */
+.grid-box:hover {
+    background-color: #ddd;
+}
+
+/* Optional: Style when clicked */
+.grid-box:active {
+    background-color: #ccc;
+}
+
+/* Styling for the buttons */
+#buttons-container {
+    display: flex;
+    justify-content: center;  /* Center buttons horizontally */
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 0 10px;  /* Optional: Adds spacing between the buttons */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+

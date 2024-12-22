@@ -86,5 +86,6 @@ def submit_input():
         'scorecard': scorecard
     })
 
+
 if __name__ == '__main__':
     app.run(debug=True)
