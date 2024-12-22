@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball Bingo</title>
+    <!-- Use Flask's url_for() to reference the static CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Baseball Bingo</h1>
+
+    <div id="grid-container">
+        <!-- Categories grid will be populated here by JavaScript -->
+    </div>
+
+    <div>
+        <p id="current-player-name"></p>
+        <p id="current-player-index"></p>
+        <p id="scorecard"></p>
+    </div>
+
+    <form id="user-input-form">
+        <input type="text" name="user-input" placeholder="Enter category or 'skip'/'wildcard'" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Use Flask's url_for() to reference the static JS file -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

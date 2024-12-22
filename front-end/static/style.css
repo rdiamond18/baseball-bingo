@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);  /* 4 columns */
+    gap: 10px;  /* Space between items */
+    padding: 20px;
+}
+
+#grid-container div {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    font-size: 1em;
+    height: 100px;  /* Adjust height if needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
