@@ -21,11 +21,21 @@
         <p id="current-player-index"></p>
     </div>
 
-    <!-- Grid container for categories -->
-    <div id="grid-container">
-        <!-- Categories grid will be populated here by JavaScript -->
+    <!-- Game container (either grid or win/lose message) -->
+    <div id="game-container">
+        <!-- The grid and win/lose messages will be dynamically populated here -->
+        <div id="grid-container">
+            <!-- Categories grid will be populated here by JavaScript -->
+        </div>
+        <div id="win-container" style="display: none;">
+            <h1>You Win!</h1>
+        </div>
+        <div id="lose-container" style="display: none;">
+            <h1>You Lose!</h1>
+        </div>
     </div>
 
+    <!-- Scorecard info -->
     <div>
         <p id="scorecard"></p>
     </div>

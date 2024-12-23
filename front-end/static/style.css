@@ -22,12 +22,11 @@
     background-color: #ddd;
 }
 
-/* Optional: Style when clicked */
 .grid-box:active {
     background-color: #ccc;
 }
 
-/* Styling for the buttons */
+/* Styling for buttons */
 #buttons-container {
     display: flex;
     justify-content: center;  /* Center buttons horizontally */
@@ -43,10 +42,20 @@ button {
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s;
-    margin: 0 10px;  /* Optional: Adds spacing between the buttons */
+    margin: 0 10px;  /*Adds spacing between the buttons */
 }
 
 button:hover {
     background-color: #45a049;
 }
 
+.grid-box.correct {
+    background-color: green;
+    color: white; 
+}
+
+#game-container h1 {
+    font-size: 36px;
+    color: red;
+    margin-top: 20px;
+}

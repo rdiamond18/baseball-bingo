@@ -62,6 +62,11 @@ def check_wildcard(player, all_categories):
     
     return correct_category_list
 
+def check_category_already_correct(scorecard, index):
+    if scorecard[index]:
+        return True
+    else: 
+        return False
 # Start the game
 @app.route('/')
 def index():
@@ -77,6 +82,21 @@ def game_category_list():
 @app.route('/game_status', methods=['GET'])
 def game_status():
     global current_player_index
+
+    # Check if all categories are correct
+    if all(scorecard):
+        return jsonify({
+            'message': 'You win!',
+            'scorecard': scorecard
+        })
+
+    # Check if the index has reached the end of players
+    if current_player_index >= len(players):
+        return jsonify({
+            'message': 'You lose!',
+            'scorecard': scorecard
+        })
+    
     return jsonify({
         'current_player': players[current_player_index],
         'current_player_index': current_player_index,
@@ -106,13 +126,30 @@ def submit_input():
 
     #handle all othe inputs
     elif user_input in categories:
+        
         correct = check_player_category_pair(players[current_player_index], user_input)
         if correct:
             category_index = categories.index(user_input)
+
+            #don't let user select the same category twice and return current state
+            if check_category_already_correct(scorecard, category_index):
+                return jsonify({
+                    'message': 'Category already selected. Please choose a different category.',
+                    'scorecard': scorecard,
+                    'current_player': players[current_player_index],
+                    'current_player_index': current_player_index
+                        })
+            
             scorecard[category_index] = True
             current_player_index += 1
         else:
             current_player_index += 2
+    
+    if current_player_index >= len(players):
+        return jsonify({
+            'message': 'Game over! Check status for results.',
+            'scorecard': scorecard
+        })
 
     return jsonify({
         'current_player': players[current_player_index],
