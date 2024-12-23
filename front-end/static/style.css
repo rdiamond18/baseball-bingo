@@ -1,21 +1,31 @@
-/* Grid container */
 #grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Adjust for the number of columns */
-    gap: 10px;
-    margin-top: 100px;
+    grid-template-columns: repeat(4, 100px);  /* 4 columns, each 100px wide */
+    grid-template-rows: repeat(4, 100px);     /* 4 rows, each 100px high */
+    grid-gap: 1px;  /* Little space between boxes */
+    justify-content: center;
+    align-items: center;
+    padding: 0;  /* Remove padding around the grid */
 }
 
 /* Style for each grid box */
 .grid-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;   /* Size of each grid item */
+    height: 100px;  /* Makes the grid items square */
     background-color: #f0f0f0;
     border: 2px solid #ccc;
-    text-align: center;
-    padding: 20px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    position: relative;
+    overflow: hidden;
+    text-align: center; /* Centers the text horizontally */
+    padding: 5px;  /* Ensures there's space around the text */
+    box-sizing: border-box; /* Ensure padding and borders are included in the total size */
+    word-wrap: break-word;  /* Allows long text to wrap within the box */
 }
+
 
 /* Change color when hovering */
 .grid-box:hover {
