@@ -30,6 +30,7 @@ def check_player_category_pair(player, category):
     except:
         print(f'Error: player {player} not found')
 
+    #handle edge case where MVP is a substring of postseason series MVP
     if category == 'Postseason Series MVP':
         if 'Postseason Series MVP' in list(player_values):
             return True
@@ -38,6 +39,28 @@ def check_player_category_pair(player, category):
         if any(category in str(value) for value in player_values):
             return True
         return False
+
+#this function handles wildcard input
+
+def check_wildcard(player, all_categories):
+    try:
+        player_values = player_info_short[player]
+    except:
+        print(f'Error: player {player} not found')
+
+    #initialize empty list of categories where player fits
+    correct_category_list = []
+
+    #check all categories
+    for category in all_categories:
+        if category == 'Postseason Series MVP':
+            if 'Postseason Series MVP' in list(player_values):
+                correct_category_list.append(category)
+        else:
+            if any(category in str(value) for value in player_values):
+                correct_category_list.append(category)
+    
+    return correct_category_list
 
 # Start the game
 @app.route('/')
@@ -67,10 +90,21 @@ def submit_input():
     data = request.json
     user_input = data['input']
 
+    #increment index by one if skip is selected
     if user_input == 'skip':
         current_player_index += 1
+    
+    #handle wildcard input
     elif user_input == 'wildcard':
-        current_player_index -= 1
+        correct_categories = check_wildcard(players[current_player_index], categories)
+
+        #mark all correct categories as correct
+        for correct_category in correct_categories:
+            index = categories.index(correct_category)
+            scorecard[index] = True
+        current_player_index += 1
+
+    #handle all othe inputs
     elif user_input in categories:
         correct = check_player_category_pair(players[current_player_index], user_input)
         if correct:
