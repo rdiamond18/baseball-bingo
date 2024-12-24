@@ -127,9 +127,17 @@ def submit_input():
             scorecard[index] = True
         current_player_index += 1
 
+        #return json for all correct categories
+        return jsonify({
+            'message': 'Wildcard processed',
+            'correct_categories': correct_categories,  
+            'scorecard': scorecard,
+            'current_player': players[current_player_index],
+            'current_player_index': current_player_index
+        })
+
     #handle all othe inputs
     elif user_input in categories:
-
 
         #get index of category user has selected
         category_index = categories.index(user_input)

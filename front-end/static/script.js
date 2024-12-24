@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to send user input to the server
     function submitInput(input) {
-        // Send the user input to the server
         fetch('/submit_input', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -36,15 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            // After the input is processed, change box colors and 
-            //fetch and update the game status
-            handleCategoryFeedback(input, data.correct);
+            // Check if the response includes a list of correct categories (wildcard case)
+            if (data.correct_categories) {
+                data.correct_categories.forEach(category => {
+                    handleCategoryFeedback(category, true); // Turn these boxes green
+                });
+            } else {
+                // For regular inputs, use the single `correct` flag
+                handleCategoryFeedback(input, data.correct);
+            }
+    
+            // Update the game status with the new data
             updateGameStatus(data);
         })
         .catch(error => {
             console.error("Error submitting input:", error);
         });
     }
+    
 
     function handleCategoryFeedback(input, isCorrect) {
         const gridItems = Array.from(document.querySelectorAll('.grid-box'));
