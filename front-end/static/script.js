@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 gridItem.addEventListener('click', () => {
                     submitInput(category);  // Submit the category as input when clicked
                 });
-
                 gridContainer.appendChild(gridItem);
             });
         })
@@ -37,12 +36,29 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            // After the input is processed, fetch and update the game status
+            // After the input is processed, change box colors and 
+            //fetch and update the game status
+            handleCategoryFeedback(input, data.correct);
             updateGameStatus(data);
         })
         .catch(error => {
             console.error("Error submitting input:", error);
         });
+    }
+
+    function handleCategoryFeedback(input, isCorrect) {
+        const gridItems = Array.from(document.querySelectorAll('.grid-box'));
+        const element = gridItems.find(item => item.textContent === input);
+        if (!element) return; // Guard against invalid input
+
+        if (isCorrect) {
+            element.classList.add('correct'); // Turn the box green if correct
+        } else {
+            element.classList.add('incorrect'); // Temporarily turn the box red if incorrect
+            setTimeout(() => {
+                element.classList.remove('incorrect'); // Reset to gray after 1 second
+            }, 500);
+        }
     }
 
     // Event listeners for Skip and Wildcard buttons

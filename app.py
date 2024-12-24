@@ -110,6 +110,9 @@ def submit_input():
     data = request.json
     user_input = data['input']
 
+    is_correct = False  # Default to incorrect
+
+
     #increment index by one if skip is selected
     if user_input == 'skip':
         current_player_index += 1
@@ -126,20 +129,22 @@ def submit_input():
 
     #handle all othe inputs
     elif user_input in categories:
-        
-        correct = check_player_category_pair(players[current_player_index], user_input)
-        if correct:
-            category_index = categories.index(user_input)
 
-            #don't let user select the same category twice and return current state
-            if check_category_already_correct(scorecard, category_index):
-                return jsonify({
-                    'message': 'Category already selected. Please choose a different category.',
-                    'scorecard': scorecard,
-                    'current_player': players[current_player_index],
-                    'current_player_index': current_player_index
-                        })
-            
+
+        #get index of category user has selected
+        category_index = categories.index(user_input)
+
+        #don't let user select the same category twice and return current state
+        if check_category_already_correct(scorecard, category_index):
+            return jsonify({
+                'message': 'Category already selected. Please choose a different category.',
+                'scorecard': scorecard,
+                'current_player': players[current_player_index],
+                'current_player_index': current_player_index
+            })
+        
+        is_correct = check_player_category_pair(players[current_player_index], user_input)
+        if is_correct:
             scorecard[category_index] = True
             current_player_index += 1
         else:
@@ -148,13 +153,15 @@ def submit_input():
     if current_player_index >= len(players):
         return jsonify({
             'message': 'Game over! Check status for results.',
-            'scorecard': scorecard
+            'scorecard': scorecard,
+            'correct': is_correct
         })
 
     return jsonify({
         'current_player': players[current_player_index],
         'current_player_index': current_player_index,
-        'scorecard': scorecard
+        'scorecard': scorecard,
+        'correct': is_correct
     })
 
 

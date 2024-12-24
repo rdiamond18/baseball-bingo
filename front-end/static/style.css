@@ -59,13 +59,18 @@ button:hover {
     background-color: #45a049;
 }
 
+#game-container h1 {
+    font-size: 36px;
+    color: red;
+    margin-top: 20px;
+}
+
 .grid-box.correct {
     background-color: green;
     color: white; 
 }
 
-#game-container h1 {
-    font-size: 36px;
-    color: red;
-    margin-top: 20px;
+.grid-box.incorrect {
+    background-color: red;
+    color: white;
 }
