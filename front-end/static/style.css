@@ -8,12 +8,11 @@
     padding: 0;  /* Remove padding around the grid */
 }
 
-/* Style for each grid box */
 .grid-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end; /* Start elements at the bottom */
     width: 100px;   /* Size of each grid item */
     height: 100px;  /* Makes the grid items square */
     background-color: #f0f0f0;
@@ -21,10 +20,32 @@
     position: relative;
     overflow: hidden;
     text-align: center; /* Centers the text horizontally */
-    padding: 5px;  /* Ensures there's space around the text */
-    box-sizing: border-box; /* Ensure padding and borders are included in the total size */
-    word-wrap: break-word;  /* Allows long text to wrap within the box */
+    padding: 5px;  /* Ensure there's space around the text */
+    box-sizing: border-box; /* Include padding and borders in size */
+    word-wrap: break-word;  /* Allow long text to wrap */
 }
+
+/* Style for the image */
+.grid-box img {
+    max-width: 70%; /* Adjust image size */
+    max-height: 70%; /* Ensure it doesn't overflow */
+    object-fit: contain; /* Maintain aspect ratio */
+    margin-bottom: auto; /* Push image to the top */
+}
+
+/* Style for the text */
+.grid-box div {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background for text */
+    color: white; /* Text color */
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black; /* Shadow for better readability */
+    padding: 3px; /* Space around text */
+    text-align: center; /* Center text horizontally */
+    box-sizing: border-box; /* Include padding in size */
+}
+
+
 
 
 /* Change color when hovering */

@@ -13,7 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
             categories.forEach(category => {
                 const gridItem = document.createElement("div");
                 gridItem.classList.add('grid-box');  // Add a class for styling
-                gridItem.textContent = category;
+    
+                // Create the image element
+                const imageName = category.replace(/ /g, '_').toLowerCase(); // Replace spaces with underscores
+                const img = document.createElement("img");
+                img.src = `/static/images/${imageName}.png`; //get path to image
+                img.alt = category;
+    
+                // Create the text container
+                const text = document.createElement("div");
+                text.textContent = category;
+    
+                // Append image and text to the grid item
+                gridItem.appendChild(img);
+                gridItem.appendChild(text);
 
                 // Add click event listener to the grid item
                 gridItem.addEventListener('click', () => {
