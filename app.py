@@ -91,7 +91,7 @@ def game_status():
         })
 
     # Check if the index has reached the end of players
-    if current_player_index >= len(players):
+    if current_player_index == len(players):
         return jsonify({
             'message': 'You lose!',
             'scorecard': scorecard
@@ -108,10 +108,17 @@ def game_status():
 def submit_input():
     global current_player_index
     data = request.json
+
+    # Check if the player has run out of players to select from
+    if current_player_index >= len(players):
+        return jsonify({
+            'message': 'You lose!',
+            'scorecard': scorecard
+        })
+    
     user_input = data['input']
 
     is_correct = False  # Default to incorrect
-
 
     #increment index by one if skip is selected
     if user_input == 'skip':
@@ -157,8 +164,16 @@ def submit_input():
             current_player_index += 1
         else:
             current_player_index += 2
-    
-    if current_player_index >= len(players):
+
+    # Check if all categories are correct
+    if all(scorecard):
+        return jsonify({
+            'message': 'You win!',
+            'scorecard': scorecard
+        })
+
+    #check again if there are no players left
+    if current_player_index >= len(players) - 1:
         return jsonify({
             'message': 'Game over! Check status for results.',
             'scorecard': scorecard,

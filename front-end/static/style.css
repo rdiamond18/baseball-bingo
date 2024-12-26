@@ -23,6 +23,8 @@
     padding: 5px;  /* Ensure there's space around the text */
     box-sizing: border-box; /* Include padding and borders in size */
     word-wrap: break-word;  /* Allow long text to wrap */
+    transition: background-color 0.2s ease, color 0.2s ease;
+
 }
 
 /* Style for the image */
@@ -44,9 +46,6 @@
     text-align: center; /* Center text horizontally */
     box-sizing: border-box; /* Include padding in size */
 }
-
-
-
 
 /* Change color when hovering */
 .grid-box:hover {

@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to send user input to the server
     function submitInput(input) {
+        if (gameEnded) return; // Prevent further input if the game has ended
         fetch('/submit_input', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -48,6 +49,19 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
+            // If game is over display message
+            if (data.message === 'You win!' || data.message === 'You lose!') {
+                gameEnded = true; // Set the flag
+                gridContainer.style.display = 'none';
+                if (data.message === 'You win!') {
+                    winContainer.style.display = 'block';
+                    loseContainer.style.display = 'none';
+                } else {
+                    winContainer.style.display = 'none';
+                    loseContainer.style.display = 'block';
+                }
+                return; // Exit early since the game is over
+            }
             // Check if the response includes a list of correct categories (wildcard case)
             if (data.correct_categories) {
                 data.correct_categories.forEach(category => {
@@ -94,23 +108,32 @@ document.addEventListener("DOMContentLoaded", () => {
         submitInput('wildcard');
     });
 
+    let gameEnded = false; // Flag to track game end state
+    let pollingInterval = setInterval(fetchAndUpdateGameStatus, 2000);
+
     // Function to update the game status
     function updateGameStatus(data) {
         const playerNameElement = document.getElementById('current-player-name');
         const playerIndexElement = document.getElementById('current-player-index');
         const scorecardElement = document.getElementById('scorecard');
 
+        if (gameEnded) {
+            clearInterval(pollingInterval)
+            return; // Do nothing if the game has ended
+        }
         // Show or hide the grid and win/lose messages
-        if (data.message === 'You lose!') {
+        if (data.message === 'You Win!') {
             // Hide grid and show lose message
-            gridContainer.style.display = 'none';
-            winContainer.style.display = 'none';
-            loseContainer.style.display = 'block';
-        } else if (data.message === 'You win!') {
-            // Hide grid and show win message
             gridContainer.style.display = 'none';
             winContainer.style.display = 'block';
             loseContainer.style.display = 'none';
+            gameEnded = true;
+        } else if (data.message === 'You Lose!') {
+            // Hide grid and show win message
+            gridContainer.style.display = 'none';
+            winContainer.style.display = 'none';
+            loseContainer.style.display = 'block';
+            gameEnded = true;
         } else {
             // Show grid and hide win/lose messages
             gridContainer.style.display = 'grid';
@@ -126,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch and update game status
     function fetchAndUpdateGameStatus() {
+        if (gameEnded) return; // Stop polling if the game has ended
         fetch('/game_status')
             .then(response => response.json())
             .then(data => {
@@ -136,5 +160,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initial fetch and periodic updates
     fetchAndUpdateGameStatus(); // Fetch once on page load
-    setInterval(fetchAndUpdateGameStatus, 5000); // Poll every 5 seconds
+    setInterval(pollingInterval); // Poll every 2 seconds
 });
