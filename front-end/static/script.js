@@ -108,6 +108,47 @@ document.addEventListener("DOMContentLoaded", () => {
         submitInput('wildcard');
     });
 
+    // Instructions section: Add event listener for instructions
+    const instructionsButton = document.getElementById('instructions-button');
+    const instructionsModal = document.getElementById('instructions-modal');
+    const closeModal = document.getElementById('close-modal');
+    const instructionsText = document.getElementById('instructions-text');
+
+    // Open modal and fetch instructions
+    instructionsButton.addEventListener('click', () => {
+        fetch('../static/instructions.txt') // Path to your .txt file
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load instructions.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Split the text into sentences and join them with <br> tags
+                const formattedText = data
+                    .split(/(?<=[.!?])\s+/) // Split by sentence-ending punctuation followed by a space
+                    .join('<br><br>'); // Add two line breaks for spacing
+    
+                instructionsText.innerHTML = formattedText; // Use innerHTML to include <br> tags
+                instructionsModal.style.display = 'flex'; // Show modal
+            })
+            .catch(error => {
+                instructionsText.textContent = 'Error loading instructions. Please try again later.';
+                instructionsModal.style.display = 'flex'; // Show modal
+            });
+    });
+    // Close modal
+    closeModal.addEventListener('click', () => {
+        instructionsModal.style.display = 'none'; // Hide modal
+    });
+
+    // Close modal when clicking outside modal content
+    instructionsModal.addEventListener('click', (event) => {
+        if (event.target === instructionsModal) {
+            instructionsModal.style.display = 'none';
+        }
+    });
+
 
     let gameEnded = false; // Flag to track game end state
     let pollingInterval = setInterval(fetchAndUpdateGameStatus, 2000);

@@ -1,0 +1,5 @@
+Welcome to Baseball Bingo! Your goal is to try and fill out the following grid using no more than 40 players.
+Players will appear above the grid, and you can click on a category to cross it off.  
+If you believe the player matches none of the categories, you can select the skip button.
+If you incorrectly choose a category, you will lose that player as well as the next player.
+Once per game, you can use the Wildcard button, which will select all matching categories on the grid for the player. 

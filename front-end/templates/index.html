@@ -15,10 +15,24 @@
         <button>Wildcard</button>
     </div>
 
-    <!-- Player info section -->
-    <div id="player-info">
-        <p id="current-player-name"></p>
-        <p id="current-player-index"></p>
+    <!-- Centered Container -->
+    <div id="center-container">
+        <!-- Instructions Button -->
+        <button id="instructions-button">❓</button>
+
+        <!-- Instructions Modal -->
+        <div id="instructions-modal" style="display: none;">
+            <div id="modal-content">
+                <span id="close-modal">&times;</span>
+                <div id="instructions-text"></div>
+            </div>
+        </div>
+
+        <!-- Player Info Section -->
+        <div id="player-info">
+            <p id="current-player-name"></p>
+            <p id="current-player-index"></p>
+        </div>
     </div>
 
     <!-- Game container (either grid or win/lose message) -->
