@@ -67,13 +67,23 @@ button {
     padding: 10px 20px;
     font-size: 1.2em;
     cursor: pointer;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Default green */
     color: white;
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s;
-    margin: 0 10px;  /*Adds spacing between the buttons */
+    margin: 0 10px;  /* Adds spacing between the buttons */
 }
+
+/* Styling specifically for the Skip button */
+button.skip {
+    background-color: rgb(140, 145, 141); /* Grey background */
+}
+
+button.skip:hover {
+    background-color: #6c746d; /* Darker grey on hover */
+}
+/* Wildcard button hover */
 
 button:hover {
     background-color: #45a049;

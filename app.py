@@ -91,7 +91,7 @@ def game_status():
         })
 
     # Check if the index has reached the end of players
-    if current_player_index == len(players):
+    if current_player_index >= len(players):
         return jsonify({
             'message': 'You lose!',
             'scorecard': scorecard
@@ -173,7 +173,7 @@ def submit_input():
         })
 
     #check again if there are no players left
-    if current_player_index >= len(players) - 1:
+    if current_player_index >= len(players):
         return jsonify({
             'message': 'Game over! Check status for results.',
             'scorecard': scorecard,

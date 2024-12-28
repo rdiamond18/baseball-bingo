@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Event listeners for Skip and Wildcard buttons
-    const skipButton = document.getElementById('skip-button');
-    const wildcardButton = document.getElementById('wildcard-button');
+    const skipButton = document.querySelector('button.skip');
+    const wildcardButton = document.querySelector('button:not(.skip)'); // Selects the second button (Wildcard)
 
     skipButton.addEventListener('click', () => {
         submitInput('skip');
@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     wildcardButton.addEventListener('click', () => {
         submitInput('wildcard');
     });
+
 
     let gameEnded = false; // Flag to track game end state
     let pollingInterval = setInterval(fetchAndUpdateGameStatus, 2000);
