@@ -103,6 +103,10 @@ def game_status():
         'scorecard': scorecard
     })
 
+
+
+
+
 # Update game state with user input
 @app.route('/submit_input', methods=['POST'])
 def submit_input():
@@ -123,24 +127,31 @@ def submit_input():
     #increment index by one if skip is selected
     if user_input == 'skip':
         current_player_index += 1
+
+        #Check losing condition
+        if current_player_index >= len(players):  
+            return jsonify({'message': 'You lose!', 'scorecard': scorecard})
     
     #handle wildcard input
     elif user_input == 'wildcard':
         correct_categories = check_wildcard(players[current_player_index], categories)
-
-        #mark all correct categories as correct
         for correct_category in correct_categories:
             index = categories.index(correct_category)
             scorecard[index] = True
         current_player_index += 1
 
-        #return json for all correct categories
+        # Check win/lose conditions after processing wildcard
+        if all(scorecard):
+            return jsonify({'message': 'You win!', 'scorecard': scorecard})
+        if current_player_index >= len(players):
+            return jsonify({'message': 'You lose!', 'scorecard': scorecard})
+
         return jsonify({
             'message': 'Wildcard processed',
-            'correct_categories': correct_categories,  
+            'correct_categories': correct_categories,
             'scorecard': scorecard,
             'current_player': players[current_player_index],
-            'current_player_index': current_player_index
+            'current_player_index': current_player_index,
         })
 
     #handle all othe inputs
@@ -172,12 +183,11 @@ def submit_input():
             'scorecard': scorecard
         })
 
-    #check again if there are no players left
+    #check losing condition
     if current_player_index >= len(players):
         return jsonify({
-            'message': 'Game over! Check status for results.',
+            'message': 'You lose!',
             'scorecard': scorecard,
-            'correct': is_correct
         })
 
     return jsonify({

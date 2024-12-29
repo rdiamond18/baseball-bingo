@@ -191,14 +191,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch and update game status
     function fetchAndUpdateGameStatus() {
-        if (gameEnded) return; // Stop polling if the game has ended
+        if (gameEnded) return;
         fetch('/game_status')
             .then(response => response.json())
             .then(data => {
-                updateGameStatus(data); // Call the updated function
+                if (data.message === 'You win!' || data.message === 'You lose!') {
+                    gameEnded = true;
+                    clearInterval(pollingInterval);
+                    return;
+                }
+                updateGameStatus(data);
             })
-            .catch(error => console.error('Error fetching game status:', error));
+            .catch(console.error);
     }
+    
 
     // Initial fetch and periodic updates
     fetchAndUpdateGameStatus(); // Fetch once on page load
