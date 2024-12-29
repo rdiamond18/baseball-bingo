@@ -49,10 +49,19 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            // If game is over display message
+            // Check if the response includes a list of correct categories (wildcard case)
+            if (data.correct_categories) {
+                data.correct_categories.forEach(category => {
+                    updateGrid(category, true); // Turn these boxes green
+                });
+            } else {
+                // For regular inputs, use the single `correct` flag
+                updateGrid(input, data.correct);
+            }
+    
+            // If game is over, display the appropriate message after updating the grid
             if (data.message === 'You win!' || data.message === 'You lose!') {
                 gameEnded = true; // Set the flag
-                gridContainer.style.display = 'none';
                 if (data.message === 'You win!') {
                     winContainer.style.display = 'block';
                     loseContainer.style.display = 'none';
@@ -60,16 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     winContainer.style.display = 'none';
                     loseContainer.style.display = 'block';
                 }
-                return; // Exit early since the game is over
-            }
-            // Check if the response includes a list of correct categories (wildcard case)
-            if (data.correct_categories) {
-                data.correct_categories.forEach(category => {
-                    handleCategoryFeedback(category, true); // Turn these boxes green
-                });
-            } else {
-                // For regular inputs, use the single `correct` flag
-                handleCategoryFeedback(input, data.correct);
             }
     
             // Update the game status with the new data
@@ -80,8 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     
+    
 
-    function handleCategoryFeedback(input, isCorrect) {
+    function updateGrid(input, isCorrect) {
         const gridItems = Array.from(document.querySelectorAll('.grid-box'));
         const element = gridItems.find(item => item.textContent === input);
         if (!element) return; // Guard against invalid input
@@ -160,19 +160,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const scorecardElement = document.getElementById('scorecard');
 
         if (gameEnded) {
+            gridContainer.style.display = 'grid';
             clearInterval(pollingInterval)
             return; // Do nothing if the game has ended
         }
         // Show or hide the grid and win/lose messages
         if (data.message === 'You Win!') {
-            // Hide grid and show lose message
-            gridContainer.style.display = 'none';
             winContainer.style.display = 'block';
             loseContainer.style.display = 'none';
             gameEnded = true;
         } else if (data.message === 'You Lose!') {
-            // Hide grid and show win message
-            gridContainer.style.display = 'none';
             winContainer.style.display = 'none';
             loseContainer.style.display = 'block';
             gameEnded = true;
@@ -186,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update the game status elements
         playerNameElement.textContent = `Current Player: ${data.current_player}`;
         playerIndexElement.textContent = `Players Left: ${40 - data.current_player_index}`;
-        scorecardElement.textContent = `Scorecard: ${data.scorecard.join(', ')}`;
     }
 
     // Fetch and update game status
