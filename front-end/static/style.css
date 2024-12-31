@@ -116,7 +116,7 @@ button:hover {
 /* Style for Instructions Button */
 #instructions-button {
     padding: 5px 10px;
-    font-size: 1.5em;
+    font-size: 2em;
     cursor: pointer;
     background-color: transparent;
     border: none;
@@ -195,4 +195,35 @@ button:hover {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+
+/* Title Styling */
+h1 {
+    font-family: 'Arial Black', Gadget, sans-serif; /* Bold and modern font */
+    font-size: 3em; /* Increase size for emphasis */
+    text-align: center; /* Center horizontally */
+    color: #2c3e50; /* Darker blue for contrast */
+    margin: 20px 0; /* Space around the title */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add subtle shadow for depth */
+}
+
+/* Player Info Styling */
+#player-info {
+    display: flex;
+    flex-direction: column; /* Align name and index vertically */
+    align-items: center; /* Center items horizontally */
+    font-family: 'Verdana', Geneva, sans-serif; /* Clean and readable font */
+    font-size: 1.5em; /* Make text larger */
+    color: #34495e; /* Dark gray for contrast */
+    margin: 10px 0; /* Add some spacing */
+}
+
+/* Additional Tweaks for Buttons and Alignment */
+#center-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    margin-top: 20px; /* Add spacing above */
 }
