@@ -29,8 +29,8 @@
 
 /* Style for the image */
 .grid-box img {
-    max-width: 70%; /* Adjust image size */
-    max-height: 70%; /* Ensure it doesn't overflow */
+    width: 60px;   /* Set a fixed width */
+    height: 60px;  /* Set a fixed height */
     object-fit: contain; /* Maintain aspect ratio */
     margin-bottom: auto; /* Push image to the top */
 }
