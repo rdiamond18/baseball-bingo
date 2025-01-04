@@ -93,6 +93,15 @@ button.skip:hover {
 }
 /* Wildcard button hover */
 
+/* Styling specifically for the Skip button */
+button.wildcard {
+    background-color: rgb(64, 204, 92); /* Grey background */
+}
+
+button.wildcard:hover {
+    background-color: #45a049;
+}
+
 button:hover {
     background-color: #45a049;
 }

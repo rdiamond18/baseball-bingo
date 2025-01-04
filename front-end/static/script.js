@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Event listeners for Skip and Wildcard buttons
     const skipButton = document.querySelector('button.skip');
-    const wildcardButton = document.querySelector('button:not(.skip)'); // Selects the second button (Wildcard)
+    const wildcardButton = document.querySelector('button.wildcard'); // Selects the wildcard button
 
     skipButton.addEventListener('click', () => {
         submitInput('skip');
