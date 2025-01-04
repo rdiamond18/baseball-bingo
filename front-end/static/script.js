@@ -52,11 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
             // Check if the response includes a list of correct categories (wildcard case)
             if (data.correct_categories) {
                 data.correct_categories.forEach(category => {
-                    updateGrid(category, true); // Turn these boxes green
+                    updateGrid(category, true, isWildcard = true); // Turn these boxes gold
                 });
             } else {
                 // For regular inputs, use the single `correct` flag
-                updateGrid(input, data.correct);
+                updateGrid(input, data.correct, isWildcard = false);
             }
     
             // If game is over, display the appropriate message after updating the grid
@@ -81,14 +81,21 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
 
-    function updateGrid(input, isCorrect) {
+    function updateGrid(input, isCorrect, isWildcard) {
         const gridItems = Array.from(document.querySelectorAll('.grid-box'));
         const element = gridItems.find(item => item.textContent === input);
         if (!element) return; // Guard against invalid input
 
-        if (isCorrect) {
+        //turn boxes gold if wildcard is selected (only if box is not already green)
+        if (isWildcard) {
+            if (!element.classList.contains('correct')) {
+                element.classList.add('wildcard'); 
+            }
+        }    
+        else if (isCorrect) {
             element.classList.add('correct'); // Turn the box green if correct
-        } else {
+        } 
+        else {
             element.classList.add('incorrect'); // Temporarily turn the box red if incorrect
             setTimeout(() => {
                 element.classList.remove('incorrect'); // Reset to gray after 1 second
