@@ -113,62 +113,82 @@ def submit_input():
     global current_player_index
     data = request.json
 
-    # Check if the player has run out of players to select from
     if current_player_index >= len(players):
         return jsonify({
             'message': 'You lose!',
-            'scorecard': scorecard
+            'scorecard': scorecard,
+            'correct_categories': [],
+            'correct': False,
         })
     
     user_input = data['input']
-
     is_correct = False  # Default to incorrect
+    correct_categories = []  # Default empty list
 
-    #increment index by one if skip is selected
     if user_input == 'skip':
         current_player_index += 1
-
-        #Check losing condition
-        if current_player_index >= len(players):  
-            return jsonify({'message': 'You lose!', 'scorecard': scorecard})
-    
-    #handle wildcard input
-    elif user_input == 'wildcard':
-        correct_categories = check_wildcard(players[current_player_index], categories)
-        for correct_category in correct_categories:
-            index = categories.index(correct_category)
-            scorecard[index] = True
-        current_player_index += 1
-
-        # Check win/lose conditions after processing wildcard
-        if all(scorecard):
-            return jsonify({'message': 'You win!', 'scorecard': scorecard})
         if current_player_index >= len(players):
-            return jsonify({'message': 'You lose!', 'scorecard': scorecard})
+            return jsonify({
+                'message': 'You lose!',
+                'scorecard': scorecard,
+                'correct_categories': [],
+                'correct': False,
+            })
 
         return jsonify({
-            'message': 'Wildcard processed',
-            'correct_categories': correct_categories,
+            'message': 'Player skipped.',
             'scorecard': scorecard,
+            'correct_categories': [],
+            'correct': False,
             'current_player': players[current_player_index],
             'current_player_index': current_player_index,
         })
 
-    #handle all othe inputs
-    elif user_input in categories:
+    elif user_input == 'wildcard':
+        correct_categories = check_wildcard(players[current_player_index], categories)
+        for category in correct_categories:
+            index = categories.index(category)
+            scorecard[index] = True
+        current_player_index += 1
 
-        #get index of category user has selected
+        if all(scorecard):
+            return jsonify({
+                'message': 'You win!',
+                'scorecard': scorecard,
+                'correct_categories': correct_categories,
+                'correct': True,
+            })
+
+        if current_player_index >= len(players):
+            return jsonify({
+                'message': 'You lose!',
+                'scorecard': scorecard,
+                'correct_categories': correct_categories,
+                'correct': True,
+            })
+
+        return jsonify({
+            'message': 'Wildcard processed.',
+            'scorecard': scorecard,
+            'correct_categories': correct_categories,
+            'correct': True,
+            'current_player': players[current_player_index],
+            'current_player_index': current_player_index,
+        })
+
+    elif user_input in categories:
         category_index = categories.index(user_input)
 
-        #don't let user select the same category twice and return current state
         if check_category_already_correct(scorecard, category_index):
             return jsonify({
-                'message': 'Category already selected. Please choose a different category.',
+                'message': 'Category already selected. Choose another.',
                 'scorecard': scorecard,
+                'correct_categories': [],
+                'correct': False,
                 'current_player': players[current_player_index],
-                'current_player_index': current_player_index
+                'current_player_index': current_player_index,
             })
-        
+
         is_correct = check_player_category_pair(players[current_player_index], user_input)
         if is_correct:
             scorecard[category_index] = True
@@ -176,26 +196,39 @@ def submit_input():
         else:
             current_player_index += 2
 
-    # Check if all categories are correct
-    if all(scorecard):
-        return jsonify({
-            'message': 'You win!',
-            'scorecard': scorecard
-        })
+        if all(scorecard):
+            return jsonify({
+                'message': 'You win!',
+                'scorecard': scorecard,
+                'correct_categories': [],
+                'correct': is_correct,
+            })
 
-    #check losing condition
-    if current_player_index >= len(players):
+        if current_player_index >= len(players):
+            return jsonify({
+                'message': 'You lose!',
+                'scorecard': scorecard,
+                'correct_categories': [],
+                'correct': is_correct,
+            })
+
         return jsonify({
-            'message': 'You lose!',
+            'message': 'Category processed.',
             'scorecard': scorecard,
+            'correct_categories': [],
+            'correct': is_correct,
+            'current_player': players[current_player_index],
+            'current_player_index': current_player_index,
         })
 
+    # Invalid input
     return jsonify({
-        'current_player': players[current_player_index],
-        'current_player_index': current_player_index,
+        'message': 'Invalid input.',
         'scorecard': scorecard,
-        'correct': is_correct
+        'correct_categories': [],
+        'correct': False,
     })
+
 
 
 if __name__ == '__main__':

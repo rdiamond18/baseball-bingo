@@ -49,19 +49,23 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            // Check if the response includes a list of correct categories (wildcard case)
-            if (data.correct_categories) {
+            console.log("Server response:", data);
+        
+            // Update the grid for correct categories
+            if (data.correct_categories && data.correct_categories.length > 0) {
                 data.correct_categories.forEach(category => {
-                    updateGrid(category, true, isWildcard = true); // Turn these boxes gold
+                    updateGrid(category, true, isWildcard = true);
                 });
-            } else {
-                // For regular inputs, use the single `correct` flag
+            }
+        
+            // Update the grid for single inputs
+            if (data.correct !== undefined) {
                 updateGrid(input, data.correct, isWildcard = false);
             }
-    
-            // If game is over, display the appropriate message after updating the grid
+        
+            // Display game-ending messages
             if (data.message === 'You win!' || data.message === 'You lose!') {
-                gameEnded = true; // Set the flag
+                gameEnded = true;
                 if (data.message === 'You win!') {
                     winContainer.style.display = 'block';
                     loseContainer.style.display = 'none';
@@ -70,8 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     loseContainer.style.display = 'block';
                 }
             }
-    
-            // Update the game status with the new data
+        
+            // Update game status
             updateGameStatus(data);
         })
         .catch(error => {
@@ -82,26 +86,45 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     function updateGrid(input, isCorrect, isWildcard) {
+        console.log("=== Update Grid Start ===");
+        console.log("Input:", input, "isCorrect:", isCorrect, "isWildcard:", isWildcard);
+    
+        // Log the grid items
         const gridItems = Array.from(document.querySelectorAll('.grid-box'));
-        const element = gridItems.find(item => item.textContent === input);
-        if (!element) return; // Guard against invalid input
-
-        //turn boxes gold if wildcard is selected (only if box is not already green)
+        console.log("Number of grid items:", gridItems.length);
+        gridItems.forEach((item, index) => {
+            console.log(`Grid item ${index}:`, item.textContent.trim());
+        });
+    
+        // Find the matching grid item
+        const element = gridItems.find(item => item.textContent.trim() === input.trim());
+        if (!element) {
+            console.error("No matching grid item found for input:", input);
+            console.log("=== Update Grid End (No Match) ===");
+            return; // Guard against invalid input
+        }
+    
+        console.log("Found matching grid item:", element.textContent.trim());
+    
         if (isWildcard) {
+            console.log("Wildcard applied to:", element.textContent);
             if (!element.classList.contains('correct')) {
-                element.classList.add('wildcard'); 
+                element.classList.add('wildcard');
             }
-        }    
-        else if (isCorrect) {
-            element.classList.add('correct'); // Turn the box green if correct
-        } 
-        else {
-            element.classList.add('incorrect'); // Temporarily turn the box red if incorrect
+        } else if (isCorrect) {
+            console.log("Marking as correct:", element.textContent);
+            element.classList.add('correct');
+        } else {
+            console.log("Marking as incorrect:", element.textContent);
+            element.classList.add('incorrect');
             setTimeout(() => {
-                element.classList.remove('incorrect'); // Reset to gray after 1 second
+                element.classList.remove('incorrect');
             }, 500);
         }
+    
+        console.log("=== Update Grid End ===");
     }
+    
 
     // Event listeners for Skip and Wildcard buttons
     const skipButton = document.querySelector('button.skip');
@@ -189,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update the game status elements
         playerNameElement.textContent = `Current Player: ${data.current_player}`;
-        playerIndexElement.textContent = `Players Left: ${40 - data.current_player_index}`;
+        playerIndexElement.textContent = `Players Left: ${39 - data.current_player_index}`;
     }
 
     // Fetch and update game status
