@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update the game status elements
         playerNameElement.textContent = `Current Player: ${data.current_player}`;
-        playerIndexElement.textContent = `Players Left: ${39 - data.current_player_index}`;
+        playerIndexElement.textContent = `Players Left: ${40 - (data.current_player_index + 1)}`;
     }
 
     // Fetch and update game status
